@@ -5,6 +5,7 @@ import axios from 'axios'
 import { Button } from "@/components/ui/button"
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -18,7 +19,8 @@ const formSchema = z.object({
 })
 
 export default function Home() {
-  const [gptResponse, setGptResponse] = useState('');
+  const [gptResponse, setGptResponse] = useState('')
+  const [checkedList, setCheckedList] = useState([])
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -41,6 +43,10 @@ export default function Home() {
     }    
   }
 
+  async function checkI(index: number) {
+    console.log(index)
+  }
+
   return (
     <div>
       
@@ -55,7 +61,7 @@ export default function Home() {
               <FormItem>
                 <FormLabel>Tasks</FormLabel>
                 <FormControl>
-                  <Input placeholder="Tasks..." {...field} />
+                  <Textarea className="w-1/2 h-1/2" placeholder="Tasks..." {...field} />
                 </FormControl>
                 <FormDescription>
                   Tell me what tasks you need to get done and I'll tell you the order to do them in.
@@ -69,7 +75,8 @@ export default function Home() {
             gptResponse.split('\n').map((line, i) => (
             line.trim() !== '' && (
             <div>
-              <Checkbox id={`${i.toString()}`}/><label className="pl-3" htmlFor={`${i.toString()}`} key={i}>{line}<br/></label>
+              <Checkbox id={`${i.toString()}`} key={`checkbox ${i}`} onCheckedChange={() => checkI(i)}/>
+                <label className="pl-3" htmlFor={`${i.toString()}`} key={`label ${i}`}>{line}<br/></label>
             </div>)))
           }</div>
         </form>

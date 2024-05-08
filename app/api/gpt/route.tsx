@@ -7,7 +7,7 @@ const openai = new OpenAI();
 
 const SYSTEM_PROMPT = `You are an assistant dedicated to helping maintain users schedules.
 Your goal is to provide the most optimal schedule and ordering of todos with any given constraints, 
-assigning higher priority tasks earlier. You will be given a list of tasks and the current time in 24 hour format,
+assigning higher priority tasks earlier. You will be given a list of tasks and the current time,
 your job is to decide on the ordering of those tasks and then assign them to each hour or half hour in the day.
 Every hour of the day for the next few days required to complete the given tasks should be accounted for,
 if there is nothing to do you can fill it in with free time.
@@ -26,16 +26,18 @@ export async function POST(req: Request) {
         const body = await req.json()
         const message = body.message
         const currentTime = new Date()
-        const hours = currentTime.getHours()
+        let hours = currentTime.getHours()
+        const amOrPm = hours >= 12 ? 'PM' : 'AM'
+        hours = hours % 12 || 12
         const minutes = currentTime.getMinutes()
-        const user_message = `${message} It is currently ${hours}:${minutes}`
+        const user_message = `${message} It is currently ${hours}:${minutes} ${amOrPm}.`
         console.log(user_message)
         const completion = await openai.chat.completions.create({
             messages: [
                 { role: "system", content: SYSTEM_PROMPT },
                 { role: "user", content: user_message },
             ],
-            model: "gpt-3.5-turbo",
+            model: "gpt-4-turbo",
         });
         console.log(completion.choices[0].message.content)
         return NextResponse.json(completion.choices[0].message.content);
