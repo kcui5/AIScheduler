@@ -20,7 +20,7 @@ const formSchema = z.object({
 
 export default function Home() {
   const [gptResponse, setGptResponse] = useState('')
-  const [checkedList, setCheckedList] = useState([])
+  const [checkedList, setCheckedList] = useState<boolean[]>([])
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,13 +38,28 @@ export default function Home() {
     try {
       const response = await axios.post('/api/gpt', userInput)
       setGptResponse(response.data)
+      initializeCheckedList(response.data)
     } catch(err) {
       setGptResponse('error')
     }    
   }
 
-  async function checkI(index: number) {
+  async function initializeCheckedList(res: String) {
+    const items = res.split("\n")
+    console.log(items.length)
+    setCheckedList(Array(items.length).fill(false))
+    console.log(checkedList)
+  }
+
+  async function flipI(index: number) {
     console.log(index)
+    console.log(!checkedList[index])
+    setCheckedList(prevArray => {
+      const newArray = [...prevArray];
+      newArray[index] = !newArray[index];
+      return newArray;
+    })
+    console.log(checkedList)
   }
 
   return (
@@ -74,8 +89,8 @@ export default function Home() {
           <div>{
             gptResponse.split('\n').map((line, i) => (
             line.trim() !== '' && (
-            <div>
-              <Checkbox id={`${i.toString()}`} key={`checkbox ${i}`} onCheckedChange={() => checkI(i)}/>
+            <div key={`div ${i}`}>
+              <Checkbox id={`${i.toString()}`} key={`checkbox ${i}`} onCheckedChange={() => flipI(i)}/>
                 <label className="pl-3" htmlFor={`${i.toString()}`} key={`label ${i}`}>{line}<br/></label>
             </div>)))
           }</div>
