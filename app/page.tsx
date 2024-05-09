@@ -15,7 +15,11 @@ import { format } from 'path'
 require('dotenv').config();
 
 const formSchema = z.object({
-    message: z.string().max(500),
+    message: z.string().max(5000),
+})
+
+const regenFormSchema = z.object({
+    message: z.string().max(5000),
 })
 
 export default function Home() {
@@ -24,6 +28,13 @@ export default function Home() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      message: "",
+    },
+  })
+
+  const regenForm = useForm<z.infer<typeof regenFormSchema>>({
+    resolver: zodResolver(regenFormSchema),
     defaultValues: {
       message: "",
     },
@@ -46,25 +57,35 @@ export default function Home() {
 
   async function initializeCheckedList(res: String) {
     const items = res.split("\n")
-    console.log(items.length)
     setCheckedList(Array(items.length).fill(false))
-    console.log(checkedList)
   }
 
   async function flipI(index: number) {
-    console.log(index)
-    console.log(!checkedList[index])
     setCheckedList(prevArray => {
       const newArray = [...prevArray];
       newArray[index] = !newArray[index];
       return newArray;
     })
-    console.log(checkedList)
+  }
+
+  async function onRegenerateSubmit(values: z.infer<typeof regenFormSchema>) {
+    const msg = values.message
+    console.log(msg)
+    const userInput = {
+      edits: msg,
+      checked: checkedList,
+      oldTasks: gptResponse,
+    }
+
+    try {
+      const response = await axios.post('api/gptRegen', userInput)
+    } catch(err) {
+      console.log("Error")
+    }
   }
 
   return (
     <div>
-      
       <div className="p-10">
         <h1 className="pb-5 font-bold">AI Scheduler</h1>
         <Form {...form}>
@@ -96,6 +117,31 @@ export default function Home() {
           }</div>
         </form>
         </Form>
+
+        <div className="pt-5">{
+          gptResponse.trim() !== '' &&
+          <Form {...regenForm}>
+            <form onSubmit={regenForm.handleSubmit(onRegenerateSubmit)} className="space-y-4">
+              <FormField
+                control={regenForm.control}
+                name="message"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Regenerate</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="Edits to regenerate..." {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      Tell me edits you want to make to this schedule.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit">Regenerate</Button>
+            </form>
+          </Form> 
+        }</div>
       </div>
     </div>
   )

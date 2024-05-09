@@ -23,23 +23,33 @@ to 6am) integrated into the list at appropriate times.`;
 export async function POST(req: Request) {
     try {
         const body = await req.json()
-        const message = body.message
-        const currentTime = new Date()
-        let hours = currentTime.getHours()
-        const amOrPm = hours >= 12 ? 'PM' : 'AM'
-        hours = hours % 12 || 12
-        const minutes = currentTime.getMinutes()
-        const user_message = `${message} It is currently ${hours}:${minutes} ${amOrPm}.`
+        const checked = body.checked
+        const listOldTasks = body.oldTasks.split("\n")
+        console.log("Received:")
+        console.log(body.edits)
+        console.log(body.checked)
+        console.log(body.oldTasks)
+
+        let user_message = "The old tasks list is this:\n" + body.oldTasks
+        let completedString = ""
+        for (let i = 0; i < checked.length; i++) {
+            if (checked[i]) {
+                completedString += "\nCompleted: " + listOldTasks[i]
+            }
+        }
+        user_message += ".\nThe following tasks are denoted as completed: " + completedString
+        user_message += ".\nPlease make these edits to the schedule: " + body.edits
         console.log(user_message)
-        const completion = await openai.chat.completions.create({
-            messages: [
-                { role: "system", content: SYSTEM_PROMPT },
-                { role: "user", content: user_message },
-            ],
-            model: "gpt-4-turbo",
-        });
-        console.log(completion.choices[0].message.content)
-        return NextResponse.json(completion.choices[0].message.content)
+        // const completion = await openai.chat.completions.create({
+        //     messages: [
+        //         { role: "system", content: SYSTEM_PROMPT },
+        //         { role: "user", content: user_message },
+        //     ],
+        //     model: "gpt-4-turbo",
+        // });
+        // console.log(completion.choices[0].message.content)
+        // return NextResponse.json(completion.choices[0].message.content);
+        return NextResponse.json("back")
     } catch(err) {
         console.log("OPENAI API CALL ERROR")
         return ''
