@@ -49,7 +49,6 @@ export default function Home() {
         hour12: true //for 12-hour format with AM/PM
     })
     const userTime = timeFormatter.format(currentTime)
-    console.log(`User time: ${userTime}`)
     const userInput = {
       message: msg,
       clientTime: userTime,
