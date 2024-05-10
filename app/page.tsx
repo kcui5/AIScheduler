@@ -42,8 +42,16 @@ export default function Home() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const msg = values.message
+    const currentTime = new Date()
+    const timeFormatter = new Intl.DateTimeFormat('en-US', {
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true //for 12-hour format with AM/PM
+    })
+    const userTime = timeFormatter.format(currentTime)
     const userInput = {
       message: msg,
+      clientTime: userTime,
     }
     
     try {

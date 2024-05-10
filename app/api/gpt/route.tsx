@@ -24,15 +24,8 @@ export async function POST(req: Request) {
     try {
         const body = await req.json()
         const message = body.message
-        const currentTime = new Date()
-        const pacificTimeFormatter = new Intl.DateTimeFormat('en-US', {
-            timeZone: 'America/Los_Angeles', // The IANA name for Pacific Time
-            hour: 'numeric',
-            minute: 'numeric',
-            hour12: true //for 12-hour format with AM/PM
-        })
-        const pacificTime = pacificTimeFormatter.format(currentTime)
-        const user_message = `${message} It is currently ${pacificTime}.`
+        const time = body.clientTime
+        const user_message = `${message} It is currently ${time}.`
         console.log(user_message)
         const completion = await openai.chat.completions.create({
             messages: [
