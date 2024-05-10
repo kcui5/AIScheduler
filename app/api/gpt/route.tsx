@@ -25,6 +25,7 @@ export async function POST(req: Request) {
         const body = await req.json()
         const message = body.message
         const time = body.clientTime
+        console.log(`${time} is received user time`)
         const user_message = `${message} It is currently ${time}.`
         console.log(user_message)
         const completion = await openai.chat.completions.create({
