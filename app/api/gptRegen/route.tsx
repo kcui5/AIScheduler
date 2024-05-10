@@ -46,7 +46,7 @@ export async function POST(req: Request) {
             model: "gpt-4-turbo",
         });
         console.log(completion.choices[0].message.content)
-        return NextResponse.json({ message: completion.choices[0].message.content }, { status: 200 });
+        return NextResponse.json({ message: completion.choices[0].message.content }, { status: 200 })
     } catch(err) {
         console.log("OPENAI API CALL ERROR")
         return NextResponse.json({ message: "Error" }, { status: 500 })

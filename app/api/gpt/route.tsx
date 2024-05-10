@@ -25,15 +25,14 @@ export async function POST(req: Request) {
         const body = await req.json()
         const message = body.message
         const currentTime = new Date()
-        let hours = currentTime.getHours()
-        const amOrPm = hours >= 12 ? 'PM' : 'AM'
-        hours = hours % 12 || 12
-        const hoursString = String(hours).padStart(2, '0')
-        const minutes = currentTime.getMinutes()
-        console.log(hoursString)
-        console.log(minutes)
-        console.log(amOrPm)
-        const user_message = `${message} It is currently ${hoursString}:${minutes} ${amOrPm}.`
+        const pacificTimeFormatter = new Intl.DateTimeFormat('en-US', {
+            timeZone: 'America/Los_Angeles', // The IANA name for Pacific Time
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true //for 12-hour format with AM/PM
+        })
+        const pacificTime = pacificTimeFormatter.format(currentTime)
+        const user_message = `${message} It is currently ${pacificTime}.`
         console.log(user_message)
         const completion = await openai.chat.completions.create({
             messages: [
@@ -41,7 +40,7 @@ export async function POST(req: Request) {
                 { role: "user", content: user_message },
             ],
             model: "gpt-4-turbo",
-        });
+        })
         console.log(completion.choices[0].message.content)
         return NextResponse.json({ message: completion.choices[0].message.content }, { status: 200 })
     } catch(err) {
