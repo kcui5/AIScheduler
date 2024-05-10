@@ -2,7 +2,9 @@ import { NextResponse } from "next/server"
 
 import OpenAI from 'openai'
 
-const openai = new OpenAI();
+export const maxDuration = 30 // This function can run for a maximum of 30 seconds
+
+const openai = new OpenAI()
 
 const SYSTEM_PROMPT = `You are an assistant dedicated to helping maintain users schedules.
 Your goal is to provide the most optimal schedule and ordering of todos with any given constraints, 
