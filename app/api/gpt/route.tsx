@@ -28,8 +28,12 @@ export async function POST(req: Request) {
         let hours = currentTime.getHours()
         const amOrPm = hours >= 12 ? 'PM' : 'AM'
         hours = hours % 12 || 12
+        const hoursString = String(hours).padStart(2, '0')
         const minutes = currentTime.getMinutes()
-        const user_message = `${message} It is currently ${hours}:${minutes} ${amOrPm}.`
+        console.log(hoursString)
+        console.log(minutes)
+        console.log(amOrPm)
+        const user_message = `${message} It is currently ${hoursString}:${minutes} ${amOrPm}.`
         console.log(user_message)
         const completion = await openai.chat.completions.create({
             messages: [
