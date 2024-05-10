@@ -48,8 +48,8 @@ export default function Home() {
     
     try {
       const response = await axios.post('/api/gpt', userInput)
-      initializeCheckedList(response.data)
-      setGptResponse(response.data)
+      initializeCheckedList(response.data.message)
+      setGptResponse(response.data.message)
     } catch(err) {
       setGptResponse('error')
     }    
@@ -78,8 +78,8 @@ export default function Home() {
 
     try {
       const response = await axios.post('api/gptRegen', userInput)
-      initializeCheckedList(response.data)
-      setGptResponse(response.data)
+      initializeCheckedList(response.data.message)
+      setGptResponse(response.data.message)
     } catch(err) {
       setGptResponse('error')
     }
@@ -101,7 +101,7 @@ export default function Home() {
                   <Textarea className="" placeholder="Tasks..." {...field} />
                 </FormControl>
                 <FormDescription>
-                  Tell me what tasks you need to get done and I'll tell you the order to do them in.
+                  Tell me what tasks you need to get done and I&apos;ll tell you the order to do them in.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
