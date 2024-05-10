@@ -25,6 +25,7 @@ const regenFormSchema = z.object({
 export default function Home() {
   const [gptResponse, setGptResponse] = useState('')
   const [checkedList, setCheckedList] = useState<boolean[]>([])
+  const [loading, setLoading] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -55,9 +56,11 @@ export default function Home() {
     }
     
     try {
+      setLoading(true)
       const response = await axios.post('/api/gpt', userInput)
       initializeCheckedList(response.data.message)
       setGptResponse(response.data.message)
+      setLoading(false)
     } catch(err) {
       setGptResponse('error')
     }    
@@ -116,6 +119,9 @@ export default function Home() {
             )}
           />
           <Button type="submit">Submit</Button>
+          <div>{
+            loading && <img src="pencil.gif" alt="Loading..." className="h-24"/>
+          }</div>
           <div>{
             gptResponse.split('\n').map((line, i) => (
             line.trim() !== '' && (
