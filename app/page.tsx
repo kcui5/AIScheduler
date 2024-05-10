@@ -81,14 +81,14 @@ export default function Home() {
       initializeCheckedList(response.data)
       setGptResponse(response.data)
     } catch(err) {
-      console.log("Error")
+      setGptResponse('error')
     }
   }
 
   return (
     <div>
       <div className="p-10">
-        <h1 className="pb-5 font-bold">AI Scheduler</h1>
+        <h1 className="pb-5 font-bold text-2xl">AI Scheduler</h1>
         <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
@@ -98,7 +98,7 @@ export default function Home() {
               <FormItem>
                 <FormLabel>Tasks</FormLabel>
                 <FormControl>
-                  <Textarea className="w-1/2 h-1/2" placeholder="Tasks..." {...field} />
+                  <Textarea className="" placeholder="Tasks..." {...field} />
                 </FormControl>
                 <FormDescription>
                   Tell me what tasks you need to get done and I'll tell you the order to do them in.
