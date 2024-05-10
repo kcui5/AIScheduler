@@ -48,8 +48,8 @@ export default function Home() {
     
     try {
       const response = await axios.post('/api/gpt', userInput)
-      setGptResponse(response.data)
       initializeCheckedList(response.data)
+      setGptResponse(response.data)
     } catch(err) {
       setGptResponse('error')
     }    
@@ -70,7 +70,6 @@ export default function Home() {
 
   async function onRegenerateSubmit(values: z.infer<typeof regenFormSchema>) {
     const msg = values.message
-    console.log(msg)
     const userInput = {
       edits: msg,
       checked: checkedList,
@@ -79,6 +78,8 @@ export default function Home() {
 
     try {
       const response = await axios.post('api/gptRegen', userInput)
+      initializeCheckedList(response.data)
+      setGptResponse(response.data)
     } catch(err) {
       console.log("Error")
     }
@@ -111,7 +112,7 @@ export default function Home() {
             gptResponse.split('\n').map((line, i) => (
             line.trim() !== '' && (
             <div key={`div ${i}`}>
-              <Checkbox id={`${i.toString()}`} key={`checkbox ${i}`} onCheckedChange={() => flipI(i)}/>
+              <Checkbox checked = {checkedList[i]} id={`${i.toString()}`} key={`checkbox ${i}`} onCheckedChange={() => flipI(i)}/>
                 <label className="pl-3" htmlFor={`${i.toString()}`} key={`label ${i}`}>{line}<br/></label>
             </div>)))
           }</div>
