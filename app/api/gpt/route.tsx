@@ -15,8 +15,8 @@ if there is nothing to do you can fill it in with free time.
 Once you decide on an ordering, respond with a numbered list of those tasks, without providing an explanation
 or any other information. Respond with solely a succinct, clear numbered list of tasks,
 with their corresponding time in the day in AM and PM format. For example, you can return Do homework 4-7pm as one list item.
-Also explicitly include meal times for three meals a day and sleep (generally aiming for 8 hours from 10pm
-to 6am) integrated into the list at appropriate times.`;
+Also explicitly include meal times for three meals a day and sleep (generally aiming for around 8 hours between 10pm
+to 8am) integrated into the list at appropriate times.`;
 
 //provide estimate for reasonable amount of time to take this task
 //input task with detailed descriptions
