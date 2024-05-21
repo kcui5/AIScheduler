@@ -9,6 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
 require('dotenv').config();
 
@@ -97,7 +98,8 @@ export default function Home() {
   return (
     <div>
       <div className="p-10">
-        <h1 className="pb-5 font-bold text-2xl">AI Scheduler</h1>
+        <h1 className="pb-2 font-bold text-2xl">AI Scheduler</h1>
+        <h3 className="pb-5 text-slate-400 italic">@kile_sway</h3>
         <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
@@ -157,6 +159,23 @@ export default function Home() {
             </form>
           </Form> 
         }</div>
+        <div className="pt-5">
+          <Accordion type="single" collapsible>
+            <AccordionItem value="item-1">
+              <AccordionTrigger>???</AccordionTrigger>
+              <AccordionContent>
+                I'm an AI Scheduler dedicated to helping you maintain your schedule and order your tasks in an optimized way.
+                You can tell me your tasks and any context you'd like, such as priority, estimated time to complete, or anything else,
+                and I'll decide on a schedule for you while taking into account the current time.
+                <br ></br>
+                <br ></br>
+                In the list of tasks I return to you, you can check off the items you complete, then suggest edits to make to the schedule,
+                such as adding new tasks or removing tasks. Then click the 'Regenerate' button to get a new iteration of the schedule with
+                all of this information taken into account.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
       </div>
     </div>
   )
