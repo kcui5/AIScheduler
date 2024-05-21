@@ -34,7 +34,7 @@ export async function POST(req: Request) {
                 { role: "system", content: SYSTEM_PROMPT },
                 { role: "user", content: user_message },
             ],
-            model: "gpt-4-turbo",
+            model: "gpt-4o",
         })
         console.log(completion.choices[0].message.content)
         return NextResponse.json({ message: completion.choices[0].message.content }, { status: 200 })

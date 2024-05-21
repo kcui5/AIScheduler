@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import axios from 'axios'
+import Image from 'next/image'
 import { Button } from "@/components/ui/button"
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
@@ -122,7 +123,7 @@ export default function Home() {
           <div>{
             // Taken from https://tenor.com/view/kakaotalk-emoticon-ompangie-pentol-buffering-gif-18260464
             // @kueape on tenor.com
-            loading && <img src="kakaotalk-emoticon.gif" alt="Loading..." className="h-24 pl-2"/>
+            loading && <Image src="/kakaotalk-emoticon.gif" alt="Loading..." width="72" height="72" className="pl-2"/>
           }</div>
           <div>{
             gptResponse.split('\n').map((line, i) => (
@@ -162,15 +163,15 @@ export default function Home() {
         <div className="pt-5">
           <Accordion type="single" collapsible>
             <AccordionItem value="item-1">
-              <AccordionTrigger>???</AccordionTrigger>
+              <AccordionTrigger className="font-bold">???</AccordionTrigger>
               <AccordionContent>
-                I'm an AI Scheduler dedicated to helping you maintain your schedule and order your tasks in an optimized way.
-                You can tell me your tasks and any context you'd like, such as priority, estimated time to complete, or anything else,
-                and I'll decide on a schedule for you while taking into account the current time.
+                I&apos;m an AI Scheduler dedicated to helping you maintain your schedule and order your tasks in an optimized way.
+                You can tell me your tasks and any context you&apos;d like, such as priority, estimated time to complete, or anything else,
+                and I&apos;ll decide on a schedule for you while taking into account the current time.
                 <br ></br>
                 <br ></br>
                 In the list of tasks I return to you, you can check off the items you complete, then suggest edits to make to the schedule,
-                such as adding new tasks or removing tasks. Then click the 'Regenerate' button to get a new iteration of the schedule with
+                such as adding new tasks or removing tasks. Then click the &apos;Regenerate&apos; button to get a new iteration of the schedule with
                 all of this information taken into account.
               </AccordionContent>
             </AccordionItem>
