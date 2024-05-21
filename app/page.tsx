@@ -4,13 +4,11 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { Button } from "@/components/ui/button"
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { format } from 'path'
 
 require('dotenv').config();
 
@@ -120,11 +118,13 @@ export default function Home() {
           />
           <Button type="submit">Submit</Button>
           <div>{
-            loading && <img src="pencil.gif" alt="Loading..." className="h-24"/>
+            // Taken from https://tenor.com/view/kakaotalk-emoticon-ompangie-pentol-buffering-gif-18260464
+            // @kueape on tenor.com
+            loading && <img src="kakaotalk-emoticon.gif" alt="Loading..." className="h-24 pl-2"/>
           }</div>
           <div>{
             gptResponse.split('\n').map((line, i) => (
-            line.trim() !== '' && (
+            line.trim() !== '' && !loading && (
             <div key={`div ${i}`}>
               <Checkbox checked = {checkedList[i]} id={`${i.toString()}`} key={`checkbox ${i}`} onCheckedChange={() => flipI(i)}/>
                 <label className="pl-3" htmlFor={`${i.toString()}`} key={`label ${i}`}>{line}<br/></label>
@@ -134,7 +134,7 @@ export default function Home() {
         </Form>
 
         <div className="pt-5">{
-          gptResponse.trim() !== '' &&
+          gptResponse.trim() !== '' && !loading &&
           <Form {...regenForm}>
             <form onSubmit={regenForm.handleSubmit(onRegenerateSubmit)} className="space-y-4">
               <FormField

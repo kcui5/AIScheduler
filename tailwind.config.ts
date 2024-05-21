@@ -52,7 +52,6 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        'pencil-bg': '#e6e9ea',
       },
       borderRadius: {
         lg: "var(--radius)",
