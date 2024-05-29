@@ -88,9 +88,11 @@ export default function Home() {
     }
 
     try {
+      setLoading(true)
       const response = await axios.post('api/gptRegen', userInput)
       initializeCheckedList(response.data.message)
       setGptResponse(response.data.message)
+      setLoading(false)
     } catch(err) {
       setGptResponse('error')
     }
